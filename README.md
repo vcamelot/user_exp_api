@@ -21,22 +21,29 @@ The database is quite simple and contains two tables: `employees` and `experienc
 # Endpoints
 
 The API supports four endpoints:
+
 `GET /employees`
+
 Retrieves list of all employees
 
 `POST /employees`
+
 Creates new employee with experiences
 
 `GET /employees/:id`
+
 Retrieves employee with given ID
 
 `GET /search`
+
 Searches for employee by first or last name
 
 # Technology and approach
 
 This is a simple API, therefore all logic is kept in controllers.
+
 Since we are using a 3rd party API, failures can happen, therefore I catch the exception it can throw.
+
 All requests and responses to the API are logged via Logger class. The logs are stored under `storage/logs/api.log`. If you wish to change the name of the log file, you can do this by adjusting settings in `/config/logging.php`
 
 # What can be improved
