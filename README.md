@@ -18,9 +18,9 @@ then combines it with user experience and saves this data to the database. API a
 
 The database is quite simple and contains two tables: `employees` and `experiences`. The API operates `Employee` model which has one-to-many relation to `Experiences` model.
 
-# Endpoints
+# API endpoints
 
-The API supports four endpoints:
+The documentation can be found in `docs.yaml`. Briefly, the API supports four endpoints:
 
 `GET /employees`
 
