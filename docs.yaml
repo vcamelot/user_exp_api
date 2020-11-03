@@ -1,0 +1,227 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: 'Employee experience API'
+  description: 'Employee experience API'
+  
+definitions:
+  Employee:
+    type: object
+    properties:
+      id:
+        type: integer
+      gender:
+        type: string
+      title:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      address:
+        type: string
+      city:
+        type: string
+      state:
+        type: string      
+      country:
+        type: string      
+      postcode:
+        type: string
+      email:
+        type: string
+      experiences:
+        type: object
+        $ref: '#/definitions/Experience'
+  
+  Experience:
+    type: object
+    properties:
+      employee_id:
+        type: integer
+      company_name:
+        type: string
+      job_title:
+        type: string
+      experience:
+        type: string
+      month_from:
+        type: integer
+      year_from:
+        type: integer
+      month_to:
+        type: integer
+      year_to:
+        type: integer      
+      
+
+paths:
+  /employees:
+    get:
+      description: Returns list of all employees with their experiences
+      responses:
+        200:
+          description: List of employees
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+                description: Number of employees found
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Employee'
+        400:
+          description: No employees found in database
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+              data:
+                type: object                  
+                  
+    post:
+      description: Add new experience and fetch user from 3rd party API
+      parameters:
+        - name: experience
+          in: body
+          description: list of user experiences
+          required: true
+          schema:
+            type: array
+            items:
+              type: object
+              required:
+                - company_name
+                - job_title
+                - experience
+                - month_from
+                - year_from
+              properties:
+                company_name:
+                  type: string
+                job_title:
+                  type: string
+                experience:
+                  type: string
+                month_from:
+                  type: integer
+                year_from:
+                  type: integer
+                month_to:
+                  type: integer
+                year_to:
+                  type: integer
+      responses:
+        200:
+          description: New employee was created
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+                description: New employee and experience created
+              data:
+                type: object
+                properties:
+                  employee_id:
+                    type: integer
+                    description: autoincremented employee ID
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                  email:
+                    type: string
+        400:
+          description: An error happened, probably due to 3rd party API
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+                description: Error message from API
+              data:
+                type: object
+  /employees/{id}:
+    get:
+      description: Returns employee and their experiences
+      parameters:
+        - in: path
+          name: id
+          type: integer
+          required: true
+          description: Existing employee ID    
+      responses:
+        200:
+          description: Employee data
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+              data:
+                $ref: '#/definitions/Employee'
+        400:
+          description: Employee not found
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+                description: Employee not found
+              data:
+                type: object
+  /search:
+    get:
+      description: Find employee by first or last name
+      parameters:
+        - name: text
+          in: body
+          description: part of first or last name
+          required: true
+          schema:
+            type: object
+            properties:
+              text:
+                type: string      
+      responses:
+        200:
+          description: List of employees
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+                description: Number of employees found
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Employee'     
+        400:
+          description: No matches found
+          schema:
+            type: object
+            properties:
+              result:
+                type: string
+              message:
+                type: string
+              data:
+                type: object                    
